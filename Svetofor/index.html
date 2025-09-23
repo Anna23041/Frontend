@@ -41,6 +41,7 @@
       const yellowColor = document.getElementById("yellow");
       const greenColor = document.getElementById("green");
       console.log(redColor, yellowColor, greenColor, document);
+
       function changeLight() {
         if (currentLight == "red-yellow") {
           currentLight = "yellow-green";
@@ -65,6 +66,7 @@
         }
       }
       var currentLight = "green-yellow";
+      var fromBottom = true;
       btn.addEventListener("click", changeLight);
       setInterval(changeLight, 2 * 1000);
     </script>
