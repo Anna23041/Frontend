@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 h-full">
+    <div class="flex flex-row justify-center items-center h-full">
+      <div class="shadow-lg border-2 p-8 rounded-md">
+        <p class="font-bold text-black text-2xl mb-2 text-center">
+          Мини-таймер (секундомер)
+        </p>
+        <div
+          class="rounded-full text-black p-5 text-3xl mb-2 text-center"
+          id="label"
+        >
+          00:00:00
+        </div>
+        <div class="flex justify-center items-center">
+          <div class="flex justify-center items-center m-5">
+            <button
+              class="bg-green-500 text-white rounded-full h-10 w-20 text-center"
+              id="startBtn"
+            >
+              Start
+            </button>
+          </div>
+          <div class="flex justify-center items-center m-5">
+            <button
+              class="bg-red-500 text-white rounded-full h-10 w-20 text-center"
+              id="stopBtn"
+            >
+              Stop
+            </button>
+          </div>
+          <div class="flex justify-center items-center m-5">
+            <button
+              class="bg-slate-500 text-white rounded-full h-10 w-20 text-center"
+              id="sbrosBtn"
+            >
+              Сброс
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const btnStart = document.getElementById("startBtn");
+      console.log(btnStart, document);
+      function startTimer() {
+        timer = setInterval(rise, 1000);
+      }
+      function rise() {
+        seconds = seconds + 1;
+        const label = document.getElementById("label");
+        label.innerText = seconds;
+      }
+      var timer;
+      var seconds = 0;
+      btnStart.addEventListener("click", startTimer);
+
+      const btnStop = document.getElementById("stopBtn");
+      console.log(btnStop, document);
+      function stopTimer() {
+        clearInterval(timer);
+      }
+      btnStop.addEventListener("click", stopTimer);
+
+      const btnSbros = document.getElementById("sbrosBtn");
+      console.log(btnSbros, document);
+      function sbrosTimer() {
+        seconds = 0;
+        const label = document.getElementById("label");
+        label.innerText = seconds;
+      }
+      btnSbros.addEventListener("click", sbrosTimer);
+    </script>
+  </body>
+</html>
