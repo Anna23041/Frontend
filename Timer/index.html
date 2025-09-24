@@ -55,7 +55,7 @@
       function rise() {
         seconds = seconds + 1;
         const label = document.getElementById("label");
-        label.innerText = seconds;
+        label.innerText = formatTime(seconds);
       }
       var timer;
       var seconds = 0;
@@ -73,9 +73,15 @@
       function sbrosTimer() {
         seconds = 0;
         const label = document.getElementById("label");
-        label.innerText = seconds;
+        label.innerText = formatTime(seconds);
       }
       btnSbros.addEventListener("click", sbrosTimer);
+      function formatTime(seconds) {
+        const formatedTime = new Date(seconds * 1000)
+          .toISOString()
+          .substring(11, 19);
+        return formatedTime;
+      }
     </script>
   </body>
 </html>
