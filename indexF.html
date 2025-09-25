@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simple Form Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 h-full">
+    <div class="flex justify-center items-center h-full">
+      <div>
+        <h2 class="mb-2 font-bold text-black text-2xl mb-2">
+          Упражнение: Форма регистрации
+        </h2>
+
+        <!-- Форма -->
+
+        <form id="myForm">
+          <div
+            class="mb-2"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div class="">Имя:</div>
+            <input
+              type="text"
+              name="name"
+              required
+              class="border-2 border-black-500 p-3 rounded-md m-2 h-10 w-60"
+            />
+          </div>
+
+          <div
+            class="mb-2"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div class="">Password:</div>
+            <input
+              type="text"
+              name="password"
+              required
+              class="border-2 border-black-500 p-3 rounded-md m-2 h-10 w-60"
+            />
+          </div>
+          <div
+            class="mb-2"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div class="">Email:</div>
+            <input
+              type="text"
+              name="email"
+              required
+              class="border-2 border-black-500 p-3 rounded-md m-2 h-10 w-60"
+            />
+          </div>
+          <br /><br />
+          <div class="flex justify-center items-center">
+          <button
+            class="bg-black text-white rounded-md m-5 h-10 w-60"
+            type="submit"
+          >
+            Submit
+          </button>
+        </form>
+
+        <p id="result"></p>
+      </div>
+    </div>
+      
+    </div>
+
+    <script>
+      const form = document.getElementById("myForm");
+      const result = document.getElementById("result");
+
+      // Обработчик события отправки формы
+      form.addEventListener("submit", function (event) {
+        event.preventDefault(); // отключаем стандартную отправку (перезагрузку страницы)
+
+        const formData = new FormData(form); // собираем данные
+        const name = formData.get("name");
+        const email = formData.get("email");
+        const password = formData.get("password");
+
+        // Вывод результата
+        result.textContent = `Hello, ${name}! Your email is: ${email}`;
+      });
+    </script>
+  </body>
+</html>
