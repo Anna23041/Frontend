@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simple Form Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 h-full">
+    <div class="flex justify-center items-center h-full">
+      <div>
+        <h2 class="mb-2 font-bold text-black text-2xl mb-2">
+          Упражнение: Список задач
+        </h2>
+
+        <!-- Форма -->
+
+        <form id="myForm">
+          <div
+            class="mb-2"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <input
+              type="text"
+              name="task"
+              required
+              class="border-2 border-black-500 p-3 rounded-md m-2 h-10 w-60"
+            />
+          </div>
+          <div class="flex justify-center items-center">
+          <button
+            class="bg-black text-white rounded-md m-5 h-10 w-60"
+            type="submit"
+          >
+            Добавить
+          </button>
+        </form>
+    </div>
+    <ul id="taskList">
+        <li>
+            hi
+        </li>
+    </ul>
+</div>
+
+</div>
+
+    <script>
+      const form = document.getElementById("myForm");
+      const newTask = document.getElementById("taskList");
+
+
+      // Обработчик события отправки формы
+      form.addEventListener("submit", function (event) {
+        event.preventDefault(); // отключаем стандартную отправку (перезагрузку страницы)
+
+        const formData = new FormData(form); // собираем данные
+        const task = formData.get("task");
+
+        const li = document.createElement("li")
+        li.textContent=task
+        newTask.appendChild(li)
+
+
+      });
+    </script>
+  </body>
+</html>
