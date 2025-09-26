@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    function upperCase(name = "") {
+      return name.toUpperCase();
+    }
+    console.log(upperCase("Hello"));
+
+    function lowCase(name = "") {
+      return name.toLowerCase();
+    }
+    console.log(lowCase("Hello"));
+
+    function removeSpaces(name = "") {
+      return name.trim();
+    }
+    console.log(removeSpaces("   Anna   "));
+
+    function has(name = "") {
+      return name.includes("Anna");
+    }
+    console.log(has("My name is Anna"));
+
+    function short(name = "") {
+      return name.slice(2, 7);
+    }
+    console.log(short("JavaScript"));
+
+    function change(name = "") {
+      return name.replace("dog", "cat");
+    }
+    console.log(change("I have a dog"));
+  </script>
+</html>
