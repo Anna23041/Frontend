@@ -36,5 +36,64 @@
       return name.replace("dog", "cat");
     }
     console.log(change("I have a dog"));
+
+    function massiv(name = "") {
+      return name.split();
+    }
+    console.log(massiv("apple,banana,orange"));
+
+    function hihihi(name = "") {
+      return name.repeat(3);
+    }
+    console.log(hihihi("Hi"));
+
+    function greet(name = "") {
+      return name.concat();
+    }
+    console.log(greet("Hello", "World"));
+
+    function word(name = "") {
+      return name.indexOf("a");
+    }
+    console.log(word("Banana"));
+
+    function words(name = "") {
+      return name.lastIndexOf("a");
+    }
+    console.log(words("Banana"));
+
+    function part(name = "") {
+      return name.substring(2, 7);
+    }
+    console.log(part("JavaScript"));
+
+    function code(name = "") {
+      return name.charAt(3);
+    }
+    console.log(code("Hello"));
+
+    function codes(name = "") {
+      return name.charCodeAt(3);
+    }
+    console.log(codes("Hello"));
+
+    function starts(name = "") {
+      return name.startsWith("Hello");
+    }
+    console.log(starts("Hello, Anna!"));
+
+    function hello(name = "") {
+      return name.endsWith("!");
+    }
+    console.log(hello("Hello, Anna!"));
+
+    let helloMessage;
+    helloMessage = "Hello world";
+    console.log(helloMessage);
+    let name;
+    name = "Anna";
+    console.log(helloMessage + " " + name);
+    console.log(helloMessage.concat(" " + name));
+    console.log(`greetings ${helloMessage} to ${name}`);
   </script>
 </html>
