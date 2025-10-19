@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const book = { title: "Flowers", pages: 120 };
+      console.log(book);
+      const jsonBox = JSON.stringify(book);
+      console.log(jsonBox);
+
+      const unpacked = JSON.parse(jsonBox);
+      console.log(unpacked);
+      unpacked.pages = 128;
+      console.log(unpacked);
+      const newbook = { ...unpacked };
+      newbook.pages = 130;
+      console.log(newbook);
+      console.log(unpacked);
+    </script>
+  </body>
+</html>

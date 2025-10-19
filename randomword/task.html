@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 h-full">
+    <div class="flex flex-row justify-center items-center h-full">
+      <div class="shadow-lg border-2 p-8 rounded-md">
+        <p class="font-bold text-black text-2xl mb-2">
+          Генератор случайных цитат
+        </p>
+        <div class="flex justify-center items-center">
+          <div
+            class="bg-gray-300 rounded-full text-black p-5 text-3xl mb-2 text-center w-1/2"
+            id="label"
+          >
+            random
+          </div>
+        </div>
+        <div class="flex justify-center items-center">
+          <button class="bg-black text-white p-3 rounded-full" id="rollBtn">
+            Показать цитату
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      const btn = document.getElementById("rollBtn");
+      console.log(btn, document);
+      function rollDice() {
+        const randomWord = [
+          "Видала я котов без улыбок, но улыбку без кота",
+          "Вот видишь, все куда-то движется и во что-то превращается",
+          "Всё страньше и страньше! Всё чудесатее и чудесатее! Всё любопытственнее и любопытственнее! Всё страннее и страннее! Всё чудесится и чудесится!",
+          "Лучший способ объяснить – это самому сделать!",
+          "Думай о смысле, а слова придут сами",
+        ];
+
+        const randomnumb = Math.random() * (randomWord.length - 1);
+        const roundNumb = Math.round(randomnumb);
+
+        console.log("random", randomWord[roundNumb], roundNumb);
+
+        const label = document.getElementById("label");
+        label.innerText = randomWord[roundNumb];
+        //label.innerText = wordElementNumber;
+      }
+      btn.addEventListener("click", rollDice);
+    </script>
+  </body>
+</html>
