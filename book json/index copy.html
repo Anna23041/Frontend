@@ -22,6 +22,7 @@
             >
               <img
                 id="imageBook"
+                class="max-h-[150px] max-w-[150px]"
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh4e5JMJcOAZB3z-SN8PgREYAXw_WBIDLs7ffV3GOWESaUfgSAk-VQPMoL1GKBYTtMfB0&usqp=CAU"
                 alt=""
               />
@@ -60,12 +61,23 @@
     </div>
     <script>
       const bookCard = document.getElementById("cardBook");
-      const newCard = bookCard.cloneNode(true);
-      newCard.classList.remove("hidden");
-      const bookTitle = newCard.querySelector("#nameBook");
-      bookTitle.textContent = "new";
-      const listBook = document.getElementById("listBooks");
-      listBook.appendChild(newCard);
+      fetch("http://localhost:3000/api/books")
+        .then((r) => r.json())
+        .then((list) => {
+          console.log(list);
+          list.forEach((element) => {
+            const newCard = bookCard.cloneNode(true);
+            newCard.classList.remove("hidden");
+            const bookTitle = newCard.querySelector("#nameBook");
+            bookTitle.textContent = element.title;
+            const listBook = document.getElementById("listBooks");
+            const imageBook = newCard.querySelector("#imageBook");
+            const paragraphBook = newCard.querySelector("#discriptionBook");
+            paragraphBook.textContent = element.author;
+            imageBook.src = element.image;
+            listBook.appendChild(newCard);
+          });
+        });
     </script>
   </body>
 </html>
