@@ -7,10 +7,30 @@
   </head>
   <body class="h-full">
     <div class="bg-blue-300 h-full w-full flex flex-row">
-      <div class="bg-violet-300 w-[75%] h-full"></div>
+      <div class="bg-violet-300 w-[75%] h-full">
+        <h1 class="text-xl text-blue-800 font-bold p-3">📖All books</h1>
+        <div class="bg-purple-800 flex flex-row w-[90%]">
+          <div
+            id="cardBook"
+            class="bg-white rounded-md w-[200px] h-[280px] m-5 mt-15 p-5"
+          >
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh4e5JMJcOAZB3z-SN8PgREYAXw_WBIDLs7ffV3GOWESaUfgSAk-VQPMoL1GKBYTtMfB0&usqp=CAU"
+              alt=""
+            />
+            <h1 class="text-left font-medium text-blue-800">Name book</h1>
+            <p class="text-left text-sm p-1">About</p>
+            <button class="bg-blue-800 text-white rounded-md p-2 w-full">
+              ❤️Favorite
+            </button>
+          </div>
+        </div>
+      </div>
       <div class="bg-green-300 w-[25%] h-full">
         <div id="favBooks" class="bg-white rounded-md w-[80%] pb-5 pl-5 pt-2">
-          <h1 class="text-center mt-4">❤️Favorites</h1>
+          <h1 class="text-center mt-4 text-xl text-blue-800 font-bold">
+            ❤️Favorites
+          </h1>
           <ul id="listFavBooks">
             <li
               class="flex flex-row justify-between mr-4 mt-4 border-gray-200 border-2 rounded-md p-2"
