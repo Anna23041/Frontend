@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simple Form Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="h-full">
+    <div class="bg-blue-300 h-full w-full flex flex-row">
+      <div class="bg-violet-300 w-[75%] h-full"></div>
+      <div class="bg-green-300 w-[25%] h-full"></div>
+    </div>
+    <!-- <div class="bg-white rounded-md p-4 max-w-lg w-full">
+      <h2
+        class="flex justify-center items-center font-bold text-black text-2xl mb-4 w-300 h -300"
+      >
+        📖All books
+      </h2>
+      <div class="flex flex-row justify-between">
+        
+        
+        <div class="flex flex-row items-center mb-4">
+          <div class = "flex flex-col">
+          <div id = "myBook" class="flex border-2 border-gray-300 p-3 m-5 rounded-md w-200 h-100"> </div>
+          <button
+            class="bg-blue-800 text-white rounded-md h-10 w-20 flex-shrink-0"
+            type="submit"
+          >
+            ❤️Favorite
+          </button>
+        </div>
+      </div>
+
+        <div class="flex flex-col justify-center items-center font-bold text-black text-2xl mb-4">
+        <h3
+          class="flex justify-center items-center font-bold text-black text-2xl mb-4"
+        >
+          ❤️ Favorites
+        </h3>
+      </form>
+
+      <div
+        class="flex items-center justify-between border-2 p-3 rounded-md mt-4"
+      >
+        <div class="flex items-center">
+          <ul id="taskList" class="list-none p-0">
+            <li class="p-2 border-b border-gray-200">
+              Name book
+            </li>
+          </ul>
+        </div>
+        <button class="bg-red-500 text-white rounded-md h-8 w-30" type="button">
+          Remove
+        </button>
+      </div>
+    </div>
+  </div>
+  </div> -->
+    <script>
+
+            const formBook = document.getElementById("myBook");
+            const newBook = document.getElementById("taskList");
+
+
+
+           fetch("http://localhost:3000/api/books")
+           .then(r => r.json())
+           .then(list => console.log(list))
+           list.slice(0, 10).forEach((book) => {
+            const myBook = document.createElement("li");
+
+
+        //     fetch("http://localhost:3000/api/todos")
+        // .then((r) => r.json())
+        // .then((list) => {
+        //   list.slice(0, 5).forEach((todo) => {
+        //     const li = document.createElement("li");
+
+
+
+
+
+      // const form = document.getElementById("myForm");
+      // const newTask = document.getElementById("taskList");
+
+      // function doDelete(event) {
+      //   const id = event.target.id;
+      //   fetch(" http://localhost:3000/api/todos/" + id, {
+      //     method: "DELETE",
+      //     headers: { "Content-Type": "application/json" },
+      //   })
+      //     .then((r) => r.json())
+      //     .then((list) => {
+      //       newTask.removeChild(event.target.parentElement.parentElement);
+      //     });
+      // }
+
+      // function doModify(event) {
+      //   const id = event.target.id;
+      //   fetch(" http://localhost:3000/api/todos/" + id, {
+      //     method: "PUT",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify({ completed: event.target.checked }),
+      //   })
+      //     .then((r) => r.json())
+      //     .then((list) => {
+      //       const div = event.target.nextSibling;
+      //       if (list.completed) {
+      //         div.classList = "line-through";
+      //       } else {
+      //         div.classList = "";
+      //       }
+      //     });
+      // }
+
+      // fetch("http://localhost:3000/api/todos")
+      //   .then((r) => r.json())
+      //   .then((list) => {
+      //     list.slice(0, 5).forEach((todo) => {
+      //       const li = document.createElement("li");
+
+      //       const deleteButton = document.createElement("button");
+      //       deleteButton.onclick = doDelete;
+      //       deleteButton.textContent = "delete";
+      //       deleteButton.id = todo.id;
+      //       deleteButton.classList =
+      //         "bg-red-500 text-white rounded-md h-8 w-16";
+
+      //       const todoItemContaier = document.createElement("div");
+      //       todoItemContaier.classList =
+      //         "flex justify-between mt-4 border-t pt-4";
+
+      //       const todoItemCheckbox = document.createElement("input");
+      //       todoItemCheckbox.type = "checkbox";
+      //       todoItemCheckbox.id = todo.id;
+      //       todoItemCheckbox.onclick = doModify;
+      //       todoItemCheckbox.checked = todo.completed;
+
+      //       const todoText = document.createElement("div");
+      //       todoText.textContent = todo.text;
+
+      //       if (todo.completed) {
+      //         todoText.classList = "line-through";
+      //       } else {
+      //         todoText.classList = "";
+      //       }
+
+      //       todoItemContaier.appendChild(todoItemCheckbox);
+      //       todoItemContaier.appendChild(todoText);
+      //       todoItemContaier.appendChild(deleteButton);
+
+      //       li.appendChild(todoItemContaier);
+
+      //       newTask.appendChild(li);
+      //     });
+      //   });
+
+      // // Обработчик события отправки формы
+      // form.addEventListener("submit", function (event) {
+      //   event.preventDefault(); // отключаем стандартную отправку (перезагрузку страницы)
+
+      //   const formData = new FormData(form); // собираем данные
+      //   const task = formData.get("task");
+
+      //   fetch(" http://localhost:3000/api/todos", {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify({ text: task }),
+      //   })
+      //     .then((r) => r.json())
+      //     .then((list) => {
+      //       console.log("Создано:", list);
+      //       const li = document.createElement("li");
+
+      //       const deleteButton = document.createElement("button");
+      //       deleteButton.onclick = doDelete;
+      //       deleteButton.textContent = "delete";
+      //       deleteButton.id = list.id;
+      //       deleteButton.classList =
+      //         "bg-red-500 text-white rounded-md h-8 w-16";
+
+      //       const todoItemContaier = document.createElement("div");
+      //       todoItemContaier.classList =
+      //         "flex justify-between mt-4 border-t pt-4";
+
+      //       const todoText = document.createElement("div");
+      //       todoText.textContent = list.text;
+
+      //       const todoItemCheckbox = document.createElement("input");
+      //       todoItemCheckbox.type = "checkbox";
+      //       todoItemCheckbox.id = list.id;
+      //       todoItemCheckbox.onclick = doModify;
+      //       todoItemCheckbox.checked = list.completed;
+
+      //       if (list.completed) {
+      //         todoText.classList = "line-through";
+      //       } else {
+      //         todoText.classList = "";
+      //       }
+
+      //       todoItemContaier.appendChild(todoItemCheckbox);
+      //       todoItemContaier.appendChild(todoItemCheckbox);
+      //       todoItemContaier.appendChild(todoText);
+      //       todoItemContaier.appendChild(deleteButton);
+
+      //       li.appendChild(todoItemContaier);
+
+      //       newTask.appendChild(li);
+      //     });
+      // });
+    </script>
+  </body>
+</html>
