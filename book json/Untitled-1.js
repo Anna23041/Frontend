@@ -34,6 +34,9 @@
 
 
 
+      fetch("http://localhost:3000/api/favorites")
+      .then(response => response.json()).then(list => console.log(list))
 
+//
 
 

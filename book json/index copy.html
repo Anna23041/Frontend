@@ -30,7 +30,10 @@
                 Name book
               </h1>
               <p id="discriptionBook" class="text-left text-sm p-1">About</p>
-              <button class="bg-blue-800 text-white rounded-md p-2 w-full">
+              <button
+                id="favButton"
+                class="bg-blue-800 text-white rounded-md p-2 w-full"
+              >
                 ❤️Favorite
               </button>
             </div>
@@ -42,20 +45,7 @@
           <h1 class="text-center mt-4 text-xl text-blue-800 font-bold">
             ❤️Favorites
           </h1>
-          <ul id="listFavBooks">
-            <li
-              class="flex flex-row justify-between mr-4 mt-4 border-gray-200 border-2 rounded-md p-2"
-            >
-              <div>name book</div>
-              <button class="bg-red-500 text-white rounded-md">delete</button>
-            </li>
-            <li
-              class="flex flex-row justify-between mr-4 mt-4 border-gray-200 border-2 rounded-md p-2"
-            >
-              <div>name book</div>
-              <button class="bg-red-500 text-white rounded-md">delete</button>
-            </li>
-          </ul>
+          <ul id="listFavBooks"></ul>
         </div>
       </div>
     </div>
@@ -73,11 +63,68 @@
             const listBook = document.getElementById("listBooks");
             const imageBook = newCard.querySelector("#imageBook");
             const paragraphBook = newCard.querySelector("#discriptionBook");
+            const favButton = newCard.querySelector("#favButton");
+            favButton.id = element.id;
+            favButton.onclick = doFavorite;
             paragraphBook.textContent = element.author;
             imageBook.src = element.image;
             listBook.appendChild(newCard);
+
+            function doFavorite(event) {
+              console.log(event.target.id);
+              const id = event.target.id;
+              fetch(" http://localhost:3000/api/favorites/" + id, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title: "My book" }),
+              })
+                .then((r) => r.json())
+                .then((list) => {
+                  console.log("Создано:", list);
+                  getAllFavs();
+                });
+            }
           });
         });
+
+      function getAllFavs() {
+        fetch("http://localhost:3000/api/favorites/")
+          .then((r) => r.json())
+          .then((list) => {
+            const favList = document.getElementById("listFavBooks");
+            favList.textContent = "";
+            list.forEach((favElement) => {
+              const li = document.createElement("li");
+              li.classList =
+                "flex flex-row justify-between mr-4 mt-4 border-gray-200 border-2 rounded-md p-2";
+              const deleteButton = document.createElement("button");
+              deleteButton.onclick = deleteFav;
+              deleteButton.id = favElement.id;
+              deleteButton.classList = "bg-red-500 text-white rounded-md";
+              deleteButton.textContent = "delete";
+              console.log(deleteButton);
+              li.textContent = favElement.title;
+              li.appendChild(deleteButton);
+
+              favList.appendChild(li);
+            });
+          });
+      }
+
+      getAllFavs();
+
+      function deleteFav(event) {
+        const id = event.target.id;
+        const favList = document.getElementById("listFavBooks");
+        favList.removeChild(event.target.parentElement);
+        fetch(" http://localhost:3000/api/favorites/" + id, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: "Pride and Prejudice" }),
+        })
+          .then((r) => r.json())
+          .then((list) => console.log("Удалено:", list));
+      }
     </script>
   </body>
 </html>
