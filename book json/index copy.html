@@ -43,88 +43,112 @@
       <div class="bg-gray-100 w-[25%] h-full mt-5">
         <div id="favBooks" class="bg-white rounded-md w-[80%] pb-5 pl-5 pt-2">
           <h1 class="text-center mt-4 text-xl text-blue-800 font-bold">
-            ❤️Favorites
+            ❤️Find a book
           </h1>
-          <ul id="listFavBooks"></ul>
+          <input
+            id="search"
+            class="flex flex-row justify-between mr-4 mt-4 border-gray-200 border-2 rounded-md p-2"
+            type="text"
+          />
+        </div>
+      </div>
+      <div class="bg-gray-100 w-[25%] h-full mt-5">
+        <div
+          id="favBooks"
+          class="bg-white rounded-md w-[80%] pb-5 pl-5 pr-5 pt-2"
+        >
+          <h1 class="text-center mt-4 text-xl text-blue-800 font-bold">
+            ❤️Add new book
+          </h1>
+          <div class="flex flex-col justify-center mt-2">
+            <input
+              id="bookTitleInput"
+              class="mt-4 border-gray-200 border-2 rounded-md p-2"
+              type="text"
+            />
+            <input
+              id="authorInput"
+              class="mt-4 border-gray-200 border-2 rounded-md p-2"
+              type="text"
+            />
+            <button
+              id="addNewBookButton"
+              class="bg-red-500 text-white rounded-md p-2 mt-2"
+            >
+              Add
+            </button>
+          </div>
         </div>
       </div>
     </div>
     <script>
+      let searchWord = "";
+
+      const search = document.getElementById("search");
+      search.onkeyup = doOnSearch;
+
+      function doOnSearch(event) {
+        console.log(event.target.value, "xxx");
+        searchWord = event.target.value;
+        getAllBooks();
+      }
+
       const bookCard = document.getElementById("cardBook");
-      fetch("http://localhost:3000/api/books")
-        .then((r) => r.json())
-        .then((list) => {
-          console.log(list);
-          list.forEach((element) => {
-            const newCard = bookCard.cloneNode(true);
-            newCard.classList.remove("hidden");
-            const bookTitle = newCard.querySelector("#nameBook");
-            bookTitle.textContent = element.title;
-            const listBook = document.getElementById("listBooks");
-            const imageBook = newCard.querySelector("#imageBook");
-            const paragraphBook = newCard.querySelector("#discriptionBook");
-            const favButton = newCard.querySelector("#favButton");
-            favButton.id = element.id;
-            favButton.onclick = doFavorite;
-            paragraphBook.textContent = element.author;
-            imageBook.src = element.image;
-            listBook.appendChild(newCard);
 
-            function doFavorite(event) {
-              console.log(event.target.id);
-              const id = event.target.id;
-              fetch(" http://localhost:3000/api/favorites/" + id, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ title: "My book" }),
-              })
-                .then((r) => r.json())
-                .then((list) => {
-                  console.log("Создано:", list);
-                  getAllFavs();
-                });
-            }
-          });
-        });
+      const addButton = document.getElementById("addNewBookButton");
+      addButton.onclick = addNewBook;
 
-      function getAllFavs() {
-        fetch("http://localhost:3000/api/favorites/")
+      function addNewBook(event) {
+        const formTitle = document.getElementById("bookTitleInput");
+        const formAuthor = document.getElementById("authorInput");
+        console.log(formTitle.value, formAuthor.value);
+        fetch(" http://localhost:3000/api/books ", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: formTitle.value,
+            author: formAuthor.value,
+          }),
+        })
           .then((r) => r.json())
           .then((list) => {
-            const favList = document.getElementById("listFavBooks");
-            favList.textContent = "";
-            list.forEach((favElement) => {
-              const li = document.createElement("li");
-              li.classList =
-                "flex flex-row justify-between mr-4 mt-4 border-gray-200 border-2 rounded-md p-2";
-              const deleteButton = document.createElement("button");
-              deleteButton.onclick = deleteFav;
-              deleteButton.id = favElement.id;
-              deleteButton.classList = "bg-red-500 text-white rounded-md";
-              deleteButton.textContent = "delete";
-              console.log(deleteButton);
-              li.textContent = favElement.title;
-              li.appendChild(deleteButton);
+            console.log("Создано:", list);
+          });
+      }
 
-              favList.appendChild(li);
+      function getAllBooks() {
+        const listBook = document.getElementById("listBooks");
+        const dinamicCards = listBook.querySelectorAll(".dinamic");
+        dinamicCards.forEach((card) => card.remove());
+
+        fetch("http://localhost:3000/api/books")
+          .then((r) => r.json())
+          .then((list) => {
+            console.log(list);
+            var findbooks = list.filter((book) => {
+              const bookTitle = book.title.toLowerCase();
+              return bookTitle.includes(searchWord.toLocaleLowerCase());
+            });
+            console.log(findbooks);
+
+            findbooks.forEach((element) => {
+              const newCard = bookCard.cloneNode(true);
+              newCard.classList.remove("hidden");
+              newCard.classList.add("dinamic");
+              const bookTitle = newCard.querySelector("#nameBook");
+              bookTitle.textContent = element.title;
+              const listBook = document.getElementById("listBooks");
+              const imageBook = newCard.querySelector("#imageBook");
+              const paragraphBook = newCard.querySelector("#discriptionBook");
+              const favButton = newCard.querySelector("#favButton");
+              favButton.id = element.id;
+              paragraphBook.textContent = element.author;
+              imageBook.src = element.image;
+              listBook.appendChild(newCard);
             });
           });
       }
-
-      getAllFavs();
-
-      function deleteFav(event) {
-        const id = event.target.id;
-        const favList = document.getElementById("listFavBooks");
-        favList.removeChild(event.target.parentElement);
-        fetch(" http://localhost:3000/api/favorites/" + id, {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title: "Pride and Prejudice" }),
-        })
-          .then((r) => r.json())
-          .then((list) => console.log("Удалено:", list));
-      }
+      getAllBooks();
     </script>
   </body>
 </html>
