@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simple Form Example</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="h-full bg-gray-100">
+    <div class="bg-gray-100 h-full w-full flex flex-row">
+      <div class="bg-gray-100 w-[75%] h-full">
+        <h1 class="text-xl text-black font-bold p-3 ml-[100px]">
+          📚Магазин книг
+        </h1>
+        <div class="flex flex-row justify-center">
+          <div
+            id="listBooks"
+            class="bg-gray-100 flex flex-row w-[80%] flex-wrap justify-between justify-center"
+          >
+            <div
+              id="cardBook"
+              class="flex flex-col bg-white rounded-md w-[200px] h-[310px] m-5 mt-15 p-5 hidden"
+            >
+              <img
+                id="imageBook"
+                class="max-h-[150px] max-w-[150px] text-center"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh4e5JMJcOAZB3z-SN8PgREYAXw_WBIDLs7ffV3GOWESaUfgSAk-VQPMoL1GKBYTtMfB0&usqp=CAU"
+                alt=""
+              />
+              <h1 id="nameBook" class="text-center font-medium text-black">
+                Name book
+              </h1>
+              <p id="discriptionBook" class="text-center text-sm p-1">About</p>
+              <p id="priceBookCard" class="text-center font-medium text-black">
+                Price
+              </p>
+              <button
+                id="favButton"
+                class="bg-blue-800 text-white rounded-md p-2 w-full text-sm"
+              >
+                Добавить в корзину
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-gray-100 w-[25%] h-full mt-5">
+        <div class="w-[280px]">
+          <div class="flex items-center mb-5 justify-end">
+            <h1 id class="text-4xl">🛒</h1>
+            <div>summ</div>
+          </div>
+        </div>
+        <div id="favBooks" class="bg-white rounded-md w-[80%] pb-5 pl-5 pt-2">
+          <h1 class="text-center mt-4 text-xl text-black font-bold">
+            🛒Корзина
+          </h1>
+          <ul id="listFavBooks"></ul>
+        </div>
+      </div>
+    </div>
+    <script>
+      const bookCard = document.getElementById("cardBook");
+      fetch("http://localhost:3000/api/books")
+        .then((r) => r.json())
+        .then((list) => {
+          console.log(list);
+          list.forEach((element) => {
+            const newCard = bookCard.cloneNode(true);
+            newCard.classList.remove("hidden");
+            const bookTitle = newCard.querySelector("#nameBook");
+            bookTitle.textContent = element.title;
+            const priceBook = newCard.querySelector("#priceBookCard");
+            const listBook = document.getElementById("listBooks");
+            priceBook.textContent = element.price + "€";
+            const imageBook = newCard.querySelector("#imageBook");
+            const paragraphBook = newCard.querySelector("#discriptionBook");
+            const favButton = newCard.querySelector("#favButton");
+            favButton.id = element.id;
+            favButton.onclick = doFavorite;
+            paragraphBook.textContent = element.author;
+            imageBook.src = element.image;
+            listBook.appendChild(newCard);
+
+            function doFavorite(event) {
+              console.log(event.target.id);
+              const id = event.target.id;
+              fetch(" http://localhost:3000/api/favorites/" + id, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ title: "My book" }),
+              })
+                .then((r) => r.json())
+                .then((list) => {
+                  console.log("Создано:", list);
+                  getAllFavs();
+                });
+            }
+          });
+        });
+
+      function getAllFavs() {
+        fetch("http://localhost:3000/api/favorites/")
+          .then((r) => r.json())
+          .then((list) => {
+            const favList = document.getElementById("listFavBooks");
+            favList.textContent = "";
+            list.forEach((favElement) => {
+              const li = document.createElement("li");
+              li.classList =
+                "flex flex-row justify-between mr-4 mt-4 border-gray-200 border-2 rounded-md p-2";
+              const deleteButton = document.createElement("button");
+              deleteButton.onclick = deleteFav;
+              deleteButton.id = favElement.id;
+              deleteButton.classList = "bg-red-500 text-white rounded-md";
+              deleteButton.textContent = "delete";
+              console.log(deleteButton);
+              li.textContent = favElement.title;
+              li.appendChild(deleteButton);
+
+              favList.appendChild(li);
+            });
+          });
+      }
+
+      getAllFavs();
+
+      function deleteFav(event) {
+        const id = event.target.id;
+        const favList = document.getElementById("listFavBooks");
+        favList.removeChild(event.target.parentElement);
+        fetch(" http://localhost:3000/api/favorites/" + id, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: "Pride and Prejudice" }),
+        })
+          .then((r) => r.json())
+          .then((list) => console.log("Удалено:", list));
+      }
+
+      var books = [
+        {
+          id: 1,
+          title: "To Kill a Mockingbird",
+          author: "Harper Lee",
+          image: "https://picsum.photos/seed/book1/200/300",
+        },
+        {
+          id: 2,
+          title: "1984",
+          author: "George Orwell",
+          image: "https://picsum.photos/seed/book2/200/300",
+        },
+        {
+          id: 3,
+          title: "Pride and Prejudice",
+          author: "Jane Austen",
+          image: "https://picsum.photos/seed/book3/200/300",
+        },
+        {
+          id: 4,
+          title: "The Great Gatsby",
+          author: "F. Scott Fitzgerald",
+          image: "https://picsum.photos/seed/book4/200/300",
+        },
+        {
+          id: 5,
+          title: "Moby Dick",
+          author: "Herman Melville",
+          image: "https://picsum.photos/seed/book5/200/300",
+        },
+        {
+          id: 6,
+          title: "War and Peace",
+          author: "Leo Tolstoy",
+          image: "https://picsum.photos/seed/book6/200/300",
+        },
+        {
+          id: 7,
+          title: "The Catcher in the Rye",
+          author: "J.D. Salinger",
+          image: "https://picsum.photos/seed/book7/200/300",
+        },
+        {
+          id: 8,
+          title: "Crime and Punishment",
+          author: "Fyodor Dostoevsky",
+          image: "https://picsum.photos/seed/book8/200/300",
+        },
+        {
+          id: 9,
+          title: "The Hobbit",
+          author: "J.R.R. Tolkien",
+          image: "https://picsum.photos/seed/book9/200/300",
+        },
+        {
+          id: 10,
+          title: "Brave New World",
+          author: "Aldous Huxley",
+          image: "https://picsum.photos/seed/book10/200/300",
+        },
+      ];
+      var findbook = books.filter((book) => book.title === "The Hobbit");
+      console.log(findbook);
+    </script>
+  </body>
+</html>
