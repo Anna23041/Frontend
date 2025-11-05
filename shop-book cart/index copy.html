@@ -50,15 +50,38 @@
             <div>summ</div>
           </div>
         </div>
-        <div id="favBooks" class="bg-white rounded-md w-[80%] pb-5 pl-5 pt-2">
+        <div
+          id="favBooks"
+          class="bg-white rounded-md w-[80%] pb-5 pl-5 pt-2 h-[500px]"
+        >
           <h1 class="text-center mt-4 text-xl text-black font-bold">
             🛒Корзина
           </h1>
           <ul id="listFavBooks"></ul>
+          <button class="text-red-500 bg-white ml-3 mt-3" onclick="clearCart()">
+            Очистить корзину
+          </button>
         </div>
       </div>
     </div>
     <script>
+      let booksCart = [{ id: "1", title: "book", price: 1 }];
+
+      function clearCart() {
+        booksCart = [];
+        renderBooksCart();
+      }
+
+      function renderBooksCart() {
+        const favList = document.getElementById("listFavBooks");
+        favList.textContent = "";
+        booksCart.forEach((book) => {
+          const bookItem = document.createElement("li");
+          bookItem.textContent = book.title + " " + book.price + " euro";
+          favList.appendChild(bookItem);
+        });
+      }
+
       const bookCard = document.getElementById("cardBook");
       fetch("http://localhost:3000/api/books")
         .then((r) => r.json())
@@ -76,131 +99,23 @@
             const paragraphBook = newCard.querySelector("#discriptionBook");
             const favButton = newCard.querySelector("#favButton");
             favButton.id = element.id;
-            favButton.onclick = doFavorite;
             paragraphBook.textContent = element.author;
             imageBook.src = element.image;
             listBook.appendChild(newCard);
-
-            function doFavorite(event) {
-              console.log(event.target.id);
-              const id = event.target.id;
-              fetch(" http://localhost:3000/api/favorites/" + id, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ title: "My book" }),
-              })
-                .then((r) => r.json())
-                .then((list) => {
-                  console.log("Создано:", list);
-                  getAllFavs();
-                });
-            }
           });
         });
-
-      function getAllFavs() {
-        fetch("http://localhost:3000/api/favorites/")
-          .then((r) => r.json())
-          .then((list) => {
-            const favList = document.getElementById("listFavBooks");
-            favList.textContent = "";
-            list.forEach((favElement) => {
-              const li = document.createElement("li");
-              li.classList =
-                "flex flex-row justify-between mr-4 mt-4 border-gray-200 border-2 rounded-md p-2";
-              const deleteButton = document.createElement("button");
-              deleteButton.onclick = deleteFav;
-              deleteButton.id = favElement.id;
-              deleteButton.classList = "bg-red-500 text-white rounded-md";
-              deleteButton.textContent = "delete";
-              console.log(deleteButton);
-              li.textContent = favElement.title;
-              li.appendChild(deleteButton);
-
-              favList.appendChild(li);
-            });
-          });
-      }
-
-      getAllFavs();
-
-      function deleteFav(event) {
-        const id = event.target.id;
-        const favList = document.getElementById("listFavBooks");
-        favList.removeChild(event.target.parentElement);
-        fetch(" http://localhost:3000/api/favorites/" + id, {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title: "Pride and Prejudice" }),
-        })
-          .then((r) => r.json())
-          .then((list) => console.log("Удалено:", list));
-      }
-
-      var books = [
-        {
-          id: 1,
-          title: "To Kill a Mockingbird",
-          author: "Harper Lee",
-          image: "https://picsum.photos/seed/book1/200/300",
-        },
-        {
-          id: 2,
-          title: "1984",
-          author: "George Orwell",
-          image: "https://picsum.photos/seed/book2/200/300",
-        },
-        {
-          id: 3,
-          title: "Pride and Prejudice",
-          author: "Jane Austen",
-          image: "https://picsum.photos/seed/book3/200/300",
-        },
-        {
-          id: 4,
-          title: "The Great Gatsby",
-          author: "F. Scott Fitzgerald",
-          image: "https://picsum.photos/seed/book4/200/300",
-        },
-        {
-          id: 5,
-          title: "Moby Dick",
-          author: "Herman Melville",
-          image: "https://picsum.photos/seed/book5/200/300",
-        },
-        {
-          id: 6,
-          title: "War and Peace",
-          author: "Leo Tolstoy",
-          image: "https://picsum.photos/seed/book6/200/300",
-        },
-        {
-          id: 7,
-          title: "The Catcher in the Rye",
-          author: "J.D. Salinger",
-          image: "https://picsum.photos/seed/book7/200/300",
-        },
-        {
-          id: 8,
-          title: "Crime and Punishment",
-          author: "Fyodor Dostoevsky",
-          image: "https://picsum.photos/seed/book8/200/300",
-        },
-        {
-          id: 9,
-          title: "The Hobbit",
-          author: "J.R.R. Tolkien",
-          image: "https://picsum.photos/seed/book9/200/300",
-        },
-        {
-          id: 10,
-          title: "Brave New World",
-          author: "Aldous Huxley",
-          image: "https://picsum.photos/seed/book10/200/300",
-        },
-      ];
-      var findbook = books.filter((book) => book.title === "The Hobbit");
-      console.log(findbook);
+      renderBooksCart();
     </script>
   </body>
 </html>
+
+<!-- 
+1. визуал
+2. get с добавлением цены в карточки
+3. добавить кнопки в корзину (id, title, price)
+4. создать array object список. название книги и её цена
+5. добавить кнопки удалить
+6. сделать сумму цен
+7. сделать сумму элементов
+8.filter для удаления
+9. local storage -->
