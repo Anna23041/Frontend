@@ -47,7 +47,7 @@
         <div class="w-[280px]">
           <div class="flex items-center mb-5 justify-end">
             <h1 id class="text-4xl">🛒</h1>
-            <div>summ</div>
+            <div id="summBooks">summ</div>
           </div>
         </div>
         <div
@@ -61,15 +61,32 @@
           <button class="text-red-500 bg-white ml-3 mt-3" onclick="clearCart()">
             Очистить корзину
           </button>
+          <div id="fullPrice">Итоговая сумма</div>
         </div>
       </div>
     </div>
     <script>
-      let booksCart = [{ id: "1", title: "book", price: 1 }];
+      let booksCart = [];
+
+      function addToCart(title, price, id) {
+        booksCart.push({ title, price, id });
+        renderBooksCart();
+        renderBooksSumm();
+        renderBooksPrice();
+      }
 
       function clearCart() {
         booksCart = [];
         renderBooksCart();
+        renderBooksSumm();
+        renderBooksPrice();
+      }
+
+      function deleteBook(id) {
+        booksCart = booksCart.filter((book) => book.id != id);
+        renderBooksCart();
+        renderBooksSumm();
+        renderBooksPrice();
       }
 
       function renderBooksCart() {
@@ -77,7 +94,28 @@
         favList.textContent = "";
         booksCart.forEach((book) => {
           const bookItem = document.createElement("li");
-          bookItem.textContent = book.title + " " + book.price + " euro";
+          bookItem.classList = "flex justify-between";
+
+          const mainDiv = document.createElement("div");
+          mainDiv.classList = "flex justify-between w-full m-2";
+
+          const divTitle = document.createElement("div");
+          divTitle.textContent = book.title;
+          const divPrice = document.createElement("div");
+          divPrice.textContent = book.price + " euro ";
+
+          mainDiv.appendChild(divTitle);
+          mainDiv.appendChild(divPrice);
+
+          bookItem.appendChild(mainDiv);
+          const deleteButton = document.createElement("button");
+          deleteButton.textContent = "Удалить";
+          deleteButton.classList = "bg-white text-red-500";
+          deleteButton.onclick = function () {
+            deleteBook(book.id);
+          };
+          bookItem.appendChild(deleteButton);
+
           favList.appendChild(bookItem);
         });
       }
@@ -99,12 +137,40 @@
             const paragraphBook = newCard.querySelector("#discriptionBook");
             const favButton = newCard.querySelector("#favButton");
             favButton.id = element.id;
+            favButton.onclick = () => {
+              addToCart(element.title, element.price, element.id);
+            };
+
             paragraphBook.textContent = element.author;
             imageBook.src = element.image;
             listBook.appendChild(newCard);
           });
         });
       renderBooksCart();
+
+      function renderBooksSumm() {
+        let summBooks1 = document.getElementById("summBooks");
+        let summ = booksCart.length;
+        summBooks1.textContent = summ;
+        console.log(summ);
+      }
+      renderBooksSumm();
+
+      function renderBooksPrice() {
+        let summBooksPrice = document.getElementById("fullPrice");
+        if (booksCart.length == 0) {
+          summBooksPrice.textContent = "";
+          return;
+        }
+        console.log(booksCart, "booksCart");
+        const summPrice = booksCart.reduce(
+          (accumulator, currentValue) => accumulator + currentValue.price || 0,
+          0
+        );
+        summBooksPrice.textContent =
+          "Итоговая сумма:" + " " + summPrice + " " + "euro";
+      }
+      renderBooksPrice();
     </script>
   </body>
 </html>
